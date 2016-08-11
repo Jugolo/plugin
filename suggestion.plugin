@@ -1,4 +1,20 @@
 @listen after message there is typed in the chat
 listen(system.message, *) -> (data){
-  regex("(\w+)") -> 
+  Regex.exec("(\w+)", data.message) -> (result){
+     saveWord();
+  }
+}
+
+@function is build like this
+func saveWord -> (){
+  if !Access.database then
+    error("Has not access to the database. Type /plugin "+Plugin.name+" +a Database");@error function will stop the exucten
+  end
+
+  q = query("SELECT `word_id` FROM "+table("word_header")+" WHERE `word`="+clean(result));
+  if q.fetch() == null then
+
+  else
+
+  end
 }
