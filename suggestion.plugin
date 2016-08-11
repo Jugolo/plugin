@@ -13,7 +13,8 @@ func saveWord -> (){
 
   q = query("SELECT `word_id` FROM "+table("word_header")+" WHERE `word`="+clean(result));
   if q.fetch() == null then
-
+    r = query("INSERT "+table("word_header")+" VALUES (null, "+clean(result[1])+", 1);");
+    query("INSERT "+table("word")+ VALUES ('"+r.id()+"', '"+data.cid()+"');
   else
 
   end
