@@ -14,9 +14,9 @@ func saveWord -> (){
   q = query("SELECT `word_id` FROM "+table("word_header")+" WHERE `word`="+clean(result));
   if (r = q.fetch()) == null then
     r = query("INSERT "+table("word_header")+" VALUES (null, "+clean(result[1])+", 1);");
-    query("INSERT "+table("word")+ VALUES ('"+r.id()+"', '"+data.cid()+"');
+    query("INSERT "+table("word")+ VALUES ('"+r.id()+"', '"+data.cid()+"', '"+data.uid()+"'");
   else
     query("UPDATE "+table("word_header")+" SET count=count+1 WHERE `id`='"+r["id"]);
-    query("INSERT "+table("word")+" VALUES ('"+r["id"]+"', '"+data.cid()+"'");
+    query("INSERT "+table("word")+" VALUES ('"+r["id"]+"', '"+data.cid()+"', '"+data.uid()+"'");
   end
 }
