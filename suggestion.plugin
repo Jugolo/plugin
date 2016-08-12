@@ -8,6 +8,16 @@ listen(system.message, *) -> (data){
   }
 }
 
+@listen after chat page is load
+listen(page.chat.loaded) -> (){
+  @if the user is geaust do not offer a list
+  if !user.isUser() then
+     return;
+  end
+
+  
+}
+
 @function is build like this
 func saveWord -> (){
   if !Access.database then
