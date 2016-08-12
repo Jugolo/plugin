@@ -1,5 +1,5 @@
 @wee make "SuggestionBot" as this plugin nick
-createNick("SuggestionNick");
+createNick("SuggestionBot");
 
 @listen after message there is typed in the chat
 listen(system.message, *) -> (data){
