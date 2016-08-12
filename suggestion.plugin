@@ -1,5 +1,5 @@
-@wee make "SuggestionBot" as this plugin nick
-createNick("SuggestionBot");
+@wee Wee tell wee will use SuggestionBot as nick. You can use "useNick" many time.
+useNick("SuggestionBot");
 
 @listen after message there is typed in the chat
 listen(system.message, *) -> (data){
