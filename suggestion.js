@@ -1,6 +1,72 @@
 //access function is a function there tell the system it should have access to specifk item(item there is not standart ex database)
 access("database", function(){return "The plugin "suggestion" need access to database connection. Else it will not work probely";});
 
+function similar_text (first, second, percent) { // eslint-disable-line camelcase
+  //  discuss at: http://locutus.io/php/similar_text/
+  // original by: Rafał Kukawski (http://blog.kukawski.pl)
+  // bugfixed by: Chris McMacken
+  // bugfixed by: Jarkko Rantavuori original by findings in stackoverflow (http://stackoverflow.com/questions/14136349/how-does-similar-text-work)
+  // improved by: Markus Padourek (taken from http://www.kevinhq.com/2012/06/php-similartext-function-in-javascript_16.html)
+  //   example 1: similar_text('Hello World!', 'Hello locutus!')
+  //   returns 1: 8
+  //   example 2: similar_text('Hello World!', null)
+  //   returns 2: 0
+
+  if (first === null ||
+    second === null ||
+    typeof first === 'undefined' ||
+    typeof second === 'undefined') {
+    return 0
+  }
+
+  first += ''
+  second += ''
+
+  var pos1 = 0
+  var pos2 = 0
+  var max = 0
+  var firstLength = first.length
+  var secondLength = second.length
+  var p
+  var q
+  var l
+  var sum
+
+  for (p = 0; p < firstLength; p++) {
+    for (q = 0; q < secondLength; q++) {
+      for (l = 0; (p + l < firstLength) && (q + l < secondLength) && (first.charAt(p + l) === second.charAt(q + l)); l++) { // eslint-disable-line max-len
+        // @todo: ^-- break up this crazy for loop and put the logic in its body
+      }
+      if (l > max) {
+        max = l
+        pos1 = p
+        pos2 = q
+      }
+    }
+  }
+
+  sum = max
+
+  if (sum) {
+    if (pos1 && pos2) {
+      sum += similar_text(first.substr(0, pos1), second.substr(0, pos2))
+    }
+
+    if ((pos1 + max < firstLength) && (pos2 + max < secondLength)) {
+      sum += similar_text(
+        first.substr(pos1 + max, firstLength - pos1 - max),
+        second.substr(pos2 + max,
+        secondLength - pos2 - max))
+    }
+  }
+
+  if (!percent) {
+    return sum
+  }
+
+  return (sum * 200) / (firstLength + secondLength)
+}
+
 function getCachedCID(uid){
    var query = database().query("SELECT `cid` FROM "+database().table("suggestion")+" WHERE `uid`='"+uid+"'");
    var buffer = [];
@@ -46,7 +112,12 @@ function getTopTen(uid){
 }
 
 function calculate(cache, msg){
+   var index = 0;
+   for(var i=0;i<cache.length;i++){
+      index += similar_text(cache[i], msg);
+   }
 
+   return index / cache.length;
 }
 
 //server.start.join is a event there is bean called every time a user joined a standart channels
