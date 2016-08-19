@@ -33,7 +33,7 @@ function getTopTen(uid){
   var results = {};
 
   //run all channel where the user has not been!
-  query = database().query("SELECT m.message, c.name FROM "+database().table("message")+" AS m LEFT JOIN "+database().table("suggestion")+" AS s ON m.cid<>s.cid LEFT JOIN "+database().table("channel") AS c ON c.id=s.cid WHERE s.uid='"+uid+"'");
+  query = database().query("SELECT m.message, c.name FROM "+database().table("message")+" AS m LEFT JOIN "+database().table("suggestion")+" AS s ON m.cid<>s.cid LEFT JOIN "+database().table("channel")+" AS c ON c.id=s.cid WHERE s.uid='"+uid+"'");
   while(row = query.fetch()){
     //controle if wee got the channel in results
     if(typeof results[row["name"]] === "undefined"){
