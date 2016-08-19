@@ -109,6 +109,16 @@ function getTopTen(uid){
     results[row["name"]][0]++;
     results[row["name"]][1] += calculate(cached, row["message"]);
   }
+
+  var fin = [];
+
+  for(var name in results){
+     fin[] = [name, results[name][1]/results[name][0]];
+  }
+
+  return fin.sort(function(current, next){
+     return current[1]-next[1];
+  });
 }
 
 function calculate(cache, msg){
