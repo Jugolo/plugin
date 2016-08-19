@@ -78,10 +78,6 @@ function getCachedCID(uid){
    return buffer;
 }
 
-function calculate(cid, not){
-   
-}
-
 function getTopTen(uid){
   var cached = [];
   //get all message in the cached channels 
@@ -118,7 +114,7 @@ function getTopTen(uid){
 
   return fin.sort(function(current, next){
      return current[1]-next[1];
-  });
+  }).slice(0, (fin.length > 10 ? 10 : fin.length));
 }
 
 function calculate(cache, msg){
@@ -137,4 +133,12 @@ event("server.start.join", function(user, channel){
    if(result.length == 0){
      return;//no offer to give the user
    }
+
+  var end = [];
+  //wee make the string
+  for(var i=0;i<result.length;i++){
+    end.push(result[i][0]);
+  }
+  //send_raw is function there send a message to the current user. It do not append anythink to it
+  send_raw("SUGGEGSTION: "+end.join(","));
 });
