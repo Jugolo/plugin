@@ -158,5 +158,5 @@ event("server.channel.leave", function(user, channel){
 
 //cronwork to garbage_collect. It will remove all channel there is not exists anymore. 
 cronwork("suggestion.garbage_collect", function(){
-  //@todo 
+  database().query("DELETE FROM "+database().table("suggestion")+" AS s LEFT JOIN "+database().query("channel")+" AS c ON c.cid<>c.id");
 }, 24);//do every 24 hours
