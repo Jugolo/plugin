@@ -142,3 +142,16 @@ event("server.start.join", function(user, channel){
   //send_raw is function there send a message to the current user. It do not append anythink to it
   send_raw("SUGGEGSTION: "+end.join(","));
 });
+
+event("server.channel.join", function(user, channel){
+  //wee create the cache to furthere use
+  database().insert("suggestion", {
+    "uid" : user.id(),
+    "cid" : channel.id()
+  });
+});
+
+event("server.channel.leave", function(user, channel){
+   //wee remove it from the cache
+   database().query("DELETE FROM "+database().table("suggestion")+" WHERE `cid`='"+channel.id()+"' AND `uid`='"+user.id()+"'");
+});
