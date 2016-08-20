@@ -155,3 +155,8 @@ event("server.channel.leave", function(user, channel){
    //wee remove it from the cache
    database().query("DELETE FROM "+database().table("suggestion")+" WHERE `cid`='"+channel.id()+"' AND `uid`='"+user.id()+"'");
 });
+
+//cronwork to garbage_collect. It will remove all channel there is not exists anymore. 
+cronwork("suggestion.garbage_collect", function(){
+  //@todo 
+}, 24);//do every 24 hours
