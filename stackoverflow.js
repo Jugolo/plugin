@@ -1,5 +1,6 @@
 access("conf_file");
 access("http");
+useNick("stackoverflow");
 
 cronwork("stackoverflow.update", function(){
   if(!conf_file_exists("last_updatet")){
@@ -23,7 +24,7 @@ function run(item){
      for(var t=0;t<items[i].tags.length;t++){
        var chan = "";
        if((chan = parseChannel(items[i].tags[i])) != null){
-
+         send_channel(chan, "[url="+items[i].link+"]"+items[i].title+"[/url]");
        }
      }
   }
