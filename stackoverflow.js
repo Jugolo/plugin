@@ -13,5 +13,15 @@ cronwork("stackoverflow.update", function(){
   config_file_create("last_updatet", new Date().getTime());
   var query = "https://api.stackexchange.com/2.2/questions?fromdate="+update+"&order=desc&sort=creation&site=stackoverflow";
   var con = new Http(query);
-  var data = JSON.parse(con.toString ());
+  var data = JSON.parse(con.toString());
+  run(data["items"]);
 }, "1m");
+
+function run(item){
+  for(var i=0;i<items.length;i++){
+     //wee run tags and see if it is valid
+     for(var t=0;t<items[i].tags.length;t++){
+
+     }
+  }
+}
