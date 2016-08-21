@@ -21,7 +21,31 @@ function run(item){
   for(var i=0;i<items.length;i++){
      //wee run tags and see if it is valid
      for(var t=0;t<items[i].tags.length;t++){
+       var chan = "";
+       if((chan = parseChannel(items[i].tags[i])) != null){
 
+       }
      }
   }
+}
+
+function parseChannel(chan){
+  if(parseChar(chan)){
+    var chan = "#"+chan;
+    if(chan_exsist(chan)){
+      return chan;
+    }
+  }
+  return null;
+}
+
+function parseChar(chan){
+  for(var i=0;i <chan.length;i++){
+     var char = chan.charCodeAt(i);
+     if(char <= 65 && char >= 90 && char <= 97 && char >= 122){
+       return false
+     }
+  }
+
+  return true;
 }
