@@ -48,12 +48,26 @@ function getFiles(data){
   return r;
 }
 
+function emptyDir(dir){
+  var dir = new DirList(dir);
+  var item;
+  while(item = dir.next(false)){
+    if(item.isDir()){
+      emptyDir(item.path());
+    }else{
+      unlink(item.path());
+    }
+  }
+
+}
+
 function renderDir(dir, data){
   var d = new DirList(dir);
   var item;
   while(item = d.next(false)){
     if(typeof data[item.name()] === "undefined"){
        if(item.isDir()){
+         emptyDir(item.path());
          rmdir(item.path());
        }else{
          unlink(item.path());
