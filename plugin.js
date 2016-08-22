@@ -41,6 +41,7 @@ function getFiles(data){
   for(var i=0;i<data.length;i++){
     r[data[i].name] = {
       "type" : data[i].type,
+      "sha" : data[i].sha,
       "context" : (data[i].type == "file" ? getFileContext(data["_links"].self) : getFiles(JSON.parse(new Http(data["_links"].self).exec().toString())))
     };
   }
@@ -49,30 +50,42 @@ function getFiles(data){
 }
 
 function emptyDir(dir){
-  var dir = new DirList(dir);
+  var dirs = new DirList(dir);
   var item;
-  while(item = dir.next(false)){
+  while(item = dirs.next(false)){
     if(item.isDir()){
       emptyDir(item.path());
     }else{
       unlink(item.path());
     }
   }
-
+  rmdir(dir);
 }
 
 function renderDir(dir, data){
   var d = new DirList(dir);
   var item;
+  var count = 0;
   while(item = d.next(false)){
     if(typeof data[item.name()] === "undefined"){
        if(item.isDir()){
          emptyDir(item.path());
-         rmdir(item.path());
        }else{
          unlink(item.path());
+    }else{
+      if(data[item.name()].sha != item.sha1()){
+        if(data[item.name()].type == "file" && data[item.name()].sha != item.sha1()){
+           //this is a file there is updated in github. 
+           file_set_context(item.path(), data[item.name()].context);//file_set_context empty the file and put the context in it.
+           count = 0;
+        }else{
+           count += renderDir(item.path(), data[item.name()].context);
+        }
+      }
+      delete data[item.name()];//remove it so it is not trying be created!
     }
   }
+  return count;
 }
 
 function update(data, path){
@@ -87,7 +100,9 @@ function update(data, path){
   //let us get the list of wich file there are in the dir
   var html = new Http(data["_links"].self);
   var files = getFiles(JSON.parse(html.exec().toString()));
-  renderDir(path, files);
+  if(renderDir(path, files) != 0){
+
+  }
 }
 
 cronwork("plugin.controler", function(){
