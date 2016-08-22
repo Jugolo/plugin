@@ -13,6 +13,10 @@ function getData(list){
 }
 
 cronwork("plugin.controler", function(){
+  //this should only be allowed when config 'PLUGIN_AUTO_UPDATE' is set to 'true'
+  if(config("PLUGIN_AUTO_UPDATE") !== "true"){
+    return;//dont run the list.
+  }
   var html = new Http("https://api.github.com/repos/Jugolo/Plugin/contents/");
   var data = getData(JSON.parse(html.exec().toString()));
   var dir = new DirList("include/plugin/");
