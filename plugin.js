@@ -27,7 +27,10 @@ function getFiles(data){
   var r = {};
 
   for(var i=0;i<data.length;i++){
-
+    r[data[i].name] = {
+      "type" : data[i].type,
+      "context" : (data[i].type == "file" ? 
+    };
   }
 
   return r;
