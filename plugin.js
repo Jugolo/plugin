@@ -18,7 +18,7 @@ cronwork("plugin.controler", function(){
   var dir = new DirList("include/plugin/");
   var current = "";
   while(current = dir.next(false)){
-    if(current.isDir()){
+    if(current.isDir() && typeof data[current.name()] !== "undefined" && data[current.name()].sha != current.sha1()){
        
     }
   }
