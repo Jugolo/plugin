@@ -23,8 +23,7 @@ cronwork("plugin.controler", function(){
   var current = "";
   while(current = dir.next(false)){
     if(current.isDir() && typeof data[current.name()] !== "undefined" && data[current.name()].sha != current.sha1()){
-       update(data[current.name()]);//update is php function there take the name and get file from github.
-       //next version should probably allow this file do the same work as php. But for now it work
+       update(data[current.name()]);
     }
   }
 }, "1d");//do it every day (24 hours interval)
