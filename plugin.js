@@ -48,6 +48,19 @@ function getFiles(data){
   return r;
 }
 
+function renderDir(dir, data){
+  var d = new DirList(dir);
+  var item;
+  while(item = d.next(false)){
+    if(typeof data[item.name()] === "undefined"){
+       if(item.isDir()){
+         rmdir(item.path());
+       }else{
+         unlink(item.path());
+    }
+  }
+}
+
 function update(data, path){
   //wee get the data from this plugin
   var query = database().query("SELECT * FROM "+table("event")+" WHERE `type`='plugin' AND `name`="+database().clean(data.name));
@@ -60,7 +73,7 @@ function update(data, path){
   //let us get the list of wich file there are in the dir
   var html = new Http(data["_links"].self);
   var files = getFiles(JSON.parse(html.exec().toString()));
-  
+  renderDir(path, files);
 }
 
 cronwork("plugin.controler", function(){
