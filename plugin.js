@@ -23,13 +23,25 @@ function getTree(path){
   return r;
 }
 
+function getFileContext(url){
+  var http = new Http(url);
+  var json = JSON.parse(http.exec().toString());
+
+  switch(json.encoding){
+    case "base64":
+      return base64_decode(json.content);
+    default:
+      throw "Unexpected encoding "+json.encoding;
+  }
+}
+
 function getFiles(data){
   var r = {};
 
   for(var i=0;i<data.length;i++){
     r[data[i].name] = {
       "type" : data[i].type,
-      "context" : (data[i].type == "file" ? 
+      "context" : (data[i].type == "file" ? getFileContext(data["_links"].self) : getFiles(JSON.parse(new Http(data["_links"].self).exec().toString())))
     };
   }
 
