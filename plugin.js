@@ -12,6 +12,21 @@ function getData(list){
  return r;
 }
 
+function getTree(path){
+  var path = new DirList(path);
+  var item;
+  var r = {};
+  while(item = path.next(false)){
+    r[item.name()] = (item.isDir() ? getTree(item.path()) : "file");
+  }
+
+  return r;
+}
+
+function notExsist(data, files){
+  
+}
+
 function update(data, path){
   //wee get the data from this plugin
   var query = database().query("SELECT * FROM "+table("event")+" WHERE `type`='plugin' AND `name`="+database().clean(data.name));
@@ -20,6 +35,9 @@ function update(data, path){
   if(row == null || row["auto_update"] !== "true"){
     return;
   }
+
+  //okay let us trying to first delete files there is not exist.
+  
 }
 
 cronwork("plugin.controler", function(){
