@@ -12,6 +12,16 @@ function getData(list){
  return r;
 }
 
+function update(data, path){
+  //wee get the data from this plugin
+  var query = database().query("SELECT * FROM "+table("event")+" WHERE `type`='plugin' AND `name`="+database().clean(data.name));
+  var row = query.fetch();
+  //if the data is not in the table do not do anything. It is not installed! Or if auto update is false
+  if(row == null || row["auto_update"] !== "true"){
+    return;
+  }
+}
+
 cronwork("plugin.controler", function(){
   //this should only be allowed when config 'PLUGIN_AUTO_UPDATE' is set to 'true'
   if(config("PLUGIN_AUTO_UPDATE") !== "true"){
@@ -23,7 +33,7 @@ cronwork("plugin.controler", function(){
   var current = "";
   while(current = dir.next(false)){
     if(current.isDir() && typeof data[current.name()] !== "undefined" && data[current.name()].sha != current.sha1()){
-       update(data[current.name()]);
+       update(data[current.name()], current.path());
     }
   }
 }, "1d");//do it every day (24 hours interval)
