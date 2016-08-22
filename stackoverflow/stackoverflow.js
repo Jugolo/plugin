@@ -14,7 +14,8 @@ cronwork("stackoverflow.update", function(){
   config_file_create("last_updatet", new Date().getTime());
   var query = "https://api.stackexchange.com/2.2/questions?fromdate="+update+"&order=desc&sort=creation&site=stackoverflow";
   var con = new Http(query);
-  var data = JSON.parse(con.toString());
+  var result = con.exec();
+  var data = JSON.parse(result.toString());
   run(data["items"]);
 }, "1m");
 
