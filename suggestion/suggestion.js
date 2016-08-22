@@ -118,11 +118,17 @@ function getTopTen(uid){
 }
 
 function calculate(cache, msg){
-   var index = 0;
+   var index = 0, count = 0;
    for(var i=0;i<cache.length;i++){
-      index += similar_text(cache[i], msg);
+      var c = new MessageParser(cache[i]);
+      if(c.command() == "MESSAGE"){
+        index += similar_text(c.message(), msg);
+        count++;
+      }
    }
-
+   if(count == 0){
+     return 0;
+   }
    return index / cache.length;
 }
 
@@ -148,6 +154,14 @@ event("server.channel.join", function(user, channel){
   database().insert("suggestion", {
     "uid" : user.id(),
     "cid" : channel.id()
+  });
+});
+
+event("tempelate.headmenu.after", function(tempelate){
+  //this will add a botton where the user can push and there will be a suggestion
+  lang = Language.load("tempelate.lang", "lang.tempelate");//will load: [plugin root]/lang/tempelate
+  tempelate.addBotton(lang.get("Show suggegstion"), {
+    "onclick" : "showSuggegstion"
   });
 });
 
