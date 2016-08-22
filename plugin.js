@@ -22,4 +22,4 @@ cronwork("plugin.controler", function(){
        
     }
   }
-}, "1d);//do it every day (24 hours interval)
+}, "1d");//do it every day (24 hours interval)
