@@ -23,8 +23,14 @@ function getTree(path){
   return r;
 }
 
-function notExsist(data, files){
-  
+function getFiles(data){
+  var r = {};
+
+  for(var i=0;i<data.length;i++){
+
+  }
+
+  return r;
 }
 
 function update(data, path){
@@ -36,7 +42,9 @@ function update(data, path){
     return;
   }
 
-  //okay let us trying to first delete files there is not exist.
+  //let us get the list of wich file there are in the dir
+  var html = new Http(data["_links"].self);
+  var files = getFiles(JSON.parse(html.exec().toString()));
   
 }
 
