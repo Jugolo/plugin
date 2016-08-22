@@ -90,7 +90,7 @@ function renderDir(dir, data){
 
 function update(data, path){
   //wee get the data from this plugin
-  var query = database().query("SELECT * FROM "+table("event")+" WHERE `type`='plugin' AND `name`="+database().clean(data.name));
+  var query = database().query("SELECT * FROM "+database().table("event")+" WHERE `type`='plugin' AND `name`="+database().clean(data.name));
   var row = query.fetch();
   //if the data is not in the table do not do anything. It is not installed! Or if auto update is false
   if(row == null || row["auto_update"] !== "true"){
@@ -101,7 +101,9 @@ function update(data, path){
   var html = new Http(data["_links"].self);
   var files = getFiles(JSON.parse(html.exec().toString()));
   if(renderDir(path, files) != 0){
-
+    database().query("DELETE FROM "+database().table("events")+" WHERE `id`='"+row["id"]+"'");
+    //wee allow the plugin to append events in the database.
+    database().query("UPDATE "+database().table("event")+" SET `append_event`='true' WHERE `id`='"+row["id"]+"'");
   }
 }
 
