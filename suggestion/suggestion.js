@@ -129,7 +129,7 @@ function calculate(cache, msg){
    if(count == 0){
      return 0;
    }
-   return index / cache.length;
+   return index / count;
 }
 
 //server.start.join is a event there is bean called every time a user joined a standart channels
@@ -163,6 +163,10 @@ event("tempelate.headmenu.after", function(tempelate){
   tempelate.addBotton(lang.get("Show suggegstion"), {
     "onclick" : "showSuggegstion"
   });
+});
+
+event("tempelate.script.after", function(tempelate){
+   tempelate.addScript(true, "js.suggegstion");
 });
 
 event("server.channel.leave", function(user, channel){
