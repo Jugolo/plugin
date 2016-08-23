@@ -138,3 +138,32 @@ event("tempelate.headmenu.after", function(tempelate){
 event("tempelate.script.after", function(tempelate){
    tempelate.addScript(true, "js.plugin_update");
 });
+
+function getList(){
+  var result = {};
+  var html = new Http("https://api.github.com/repos/Jugolo/Plugin/contents/");
+  var data = getData(JSON.parse(html.exec().toString()));
+  var dir = new DirList("include/plugin/");
+  var current = "";
+  while(current = dir.next(false)){
+    if(current.isDir() && typeof data[current.name()] !== "undefined" && data[current.name()].sha != current.sha1()){
+       result[current.name()] = false;
+    }else{
+       result[current.name()] = true;
+    }
+  }
+
+  return result;
+}
+
+//page first name and what method it should be: ajax=only ajax. page=a page the visitor visit. * can be both
+page("plugin.handle", "ajax", function(ajax){
+  var data = {};
+  switch(ajax.get("method")){
+    case "list":
+      data = getList();
+    default:
+      throw "Unkown page";//this show a error in the page
+    break;
+  }
+});
