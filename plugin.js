@@ -134,3 +134,7 @@ event("tempelate.headmenu.after", function(tempelate){
     });
   }
 });
+
+event("tempelate.script.after", function(tempelate){
+   tempelate.addScript(true, "js.plugin_update");
+});
