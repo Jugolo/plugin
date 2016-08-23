@@ -158,11 +158,19 @@ function getList(){
 
 function handleUpdate(ajax){
   //vist see if the plugin exists
-  if(!ajax.get("name") || !file_exists(ajax.get("name")+"/"+ajax.get("name")+".js")){
+  if(!ajax.get("name") || !file_exists("include/plugin/"+ajax.get("name")+"/"+ajax.get("name")+".js")){
     throw "Unknown plugin";
   }
 
-  
+  //let us get the list and se if it exists in github 
+  var html = new Http("https://api.github.com/repos/Jugolo/Plugin/contents/");
+  var data = getData(JSON.parse(html.exec().toString()));
+  if(typeof data[ajax.get()] === "undefined" || data[ajax.get("name")].sha != sha1_dir("include/"+ajax.get("name"))){
+    throw "Plugin do not need to be updated";
+  }
+
+  doUpdate(data[ajax.get("name")], "include/plugin/"+ajax.get("name")+"/");
+  return {"updated" : true};
 }
 
 //page first name and what method it should be: ajax=only ajax. page=a page the visitor visit. * can be both
