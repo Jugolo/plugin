@@ -122,3 +122,7 @@ cronwork("plugin.controler", function(){
     }
   }
 }, "1d");//do it every day (24 hours interval)
+
+event("tempelate.menu.after", function(tempelate){
+
+});
