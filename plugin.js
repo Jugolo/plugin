@@ -169,7 +169,7 @@ function handleUpdate(ajax){
     throw "Plugin do not need to be updated";
   }
 
-  doUpdate(data[ajax.get("name")], "include/plugin/"+ajax.get("name")+"/");
+  update(data[ajax.get("name")], "include/plugin/"+ajax.get("name")+"/");
   return {"updated" : true};
 }
 
