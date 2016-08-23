@@ -168,5 +168,5 @@ page("plugin.handle", "ajax", function(ajax){
   }
 
   ajax.jsonHeader();
-  JSON.stringify(data);
+  ajax.echo(JSON.stringify(data));
 });
