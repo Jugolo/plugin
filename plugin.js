@@ -156,12 +156,25 @@ function getList(){
   return result;
 }
 
+function handleUpdate(ajax){
+  //vist see if the plugin exists
+  if(!ajax.get("name") || !file_exists(ajax.get("name")+"/"+ajax.get("name")+".js")){
+    throw "Unknown plugin";
+  }
+
+  
+}
+
 //page first name and what method it should be: ajax=only ajax. page=a page the visitor visit. * can be both
 page("plugin.handle", "ajax", function(ajax){
   var data = {};
   switch(ajax.get("method")){
     case "list":
       data = getList();
+    break;
+    case "update":
+      data = handleUpdate(ajax);
+    break;
     default:
       throw "Unkown page";//this show a error in the page
     break;
