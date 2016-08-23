@@ -107,11 +107,7 @@ function update(data, path){
   }
 }
 
-cronwork("plugin.controler", function(){
-  //this should only be allowed when config 'PLUGIN_AUTO_UPDATE' is set to 'true'
-  if(config("PLUGIN_AUTO_UPDATE") !== "true"){
-    return;//dont run the list.
-  }
+function doUpdate(){
   var html = new Http("https://api.github.com/repos/Jugolo/Plugin/contents/");
   var data = getData(JSON.parse(html.exec().toString()));
   var dir = new DirList("include/plugin/");
@@ -121,8 +117,20 @@ cronwork("plugin.controler", function(){
        update(data[current.name()], current.path());
     }
   }
+}
+
+cronwork("plugin.controler", function(){
+  //this should only be allowed when config 'PLUGIN_AUTO_UPDATE' is set to 'true'
+  if(config("PLUGIN_AUTO_UPDATE") !== "true"){
+    return;//dont run the list.
+  }
+  doUpdate();
 }, "1d");//do it every day (24 hours interval)
 
-event("tempelate.menu.after", function(tempelate){
-
+event("tempelate.headmenu.after", function(tempelate){
+  if(access("PLUGIN_UPDATE")){
+    tempelate.addBotton(lang.get("Show suggegstion"), {
+      "onclick" : "showUpdate"
+    });
+  }
 });
