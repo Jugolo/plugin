@@ -166,4 +166,7 @@ page("plugin.handle", "ajax", function(ajax){
       throw "Unkown page";//this show a error in the page
     break;
   }
+
+  ajax.jsonHeader();
+  JSON.stringify(data);
 });
