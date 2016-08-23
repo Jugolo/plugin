@@ -129,7 +129,7 @@ cronwork("plugin.controler", function(){
 
 event("tempelate.headmenu.after", function(tempelate){
   if(access("PLUGIN_UPDATE")){
-    tempelate.addBotton(lang.get("Plugin updates"), {
+    tempelate.addBotton(Language.get("Plugin updates"), {
       "onclick" : "showUpdate"
     });
   }
